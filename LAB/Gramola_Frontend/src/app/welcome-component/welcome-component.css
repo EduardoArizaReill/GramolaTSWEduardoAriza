@@ -1,0 +1,112 @@
+:host{
+  display: grid;
+  place-items: center;
+  min-height: calc(100vh - 64px);
+  padding: 24px 16px;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+  /* Fondo con “atmósfera” */
+  background:
+    radial-gradient(900px 520px at 18% 12%, rgba(34, 197, 94, 0.18), transparent 60%),
+    radial-gradient(900px 520px at 82% 18%, rgba(59, 130, 246, 0.16), transparent 60%),
+    linear-gradient(180deg, #f8fafc 0%, #f3f6ff 100%);
+}
+
+.welcome-container{
+  width: min(620px, 100%);
+  text-align: center;
+
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  border-radius: 18px;
+  padding: 26px 22px;
+
+  box-shadow: 0 22px 70px rgba(2, 6, 23, 0.12);
+  backdrop-filter: blur(8px);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Halo superior (detalle artístico) */
+.welcome-container::before{
+  content: "";
+  position: absolute;
+  inset: -80px -80px auto -80px;
+  height: 160px;
+  background: radial-gradient(circle at 40% 60%, rgba(34,197,94,0.26), transparent 60%);
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+/* Icono */
+.welcome-container::after{
+  content: "🎧";
+  position: absolute;
+  top: 16px;
+  left: 18px;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(34,197,94,0.12);
+  border: 1px solid rgba(34,197,94,0.20);
+  font-size: 20px;
+  pointer-events: none;
+}
+
+.welcome-container h1{
+  margin: 10px 0 10px;
+  font-size: 28px;
+  color: #0f172a;
+  letter-spacing: -0.3px;
+}
+
+.welcome-container p{
+  margin: 0 0 18px;
+  color: #475569;
+  font-size: 14px;
+}
+
+/* Botón estilo Gramola (verde pro) */
+.welcome-container button{
+  padding: 12px 16px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  box-shadow: 0 12px 24px rgba(34, 197, 94, 0.28);
+  transition: transform 0.08s ease, filter 0.15s ease;
+}
+
+.welcome-container button:hover{
+  filter: brightness(1.05);
+}
+
+.welcome-container button:active{
+  transform: translateY(1px);
+}
+
+/* Tip: texto pequeñito debajo si quieres añadirlo luego */
+.welcome-hint{
+  margin-top: 12px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* Responsive */
+@media (max-width: 420px){
+  .welcome-container{
+    padding: 22px 16px;
+    border-radius: 16px;
+  }
+
+  .welcome-container h1{
+    font-size: 24px;
+  }
+}

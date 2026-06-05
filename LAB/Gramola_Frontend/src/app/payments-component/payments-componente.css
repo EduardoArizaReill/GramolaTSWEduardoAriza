@@ -1,0 +1,369 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.payment-page {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.subscription-layout,
+.song-payment-layout {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 28px;
+  border-radius: 24px;
+  background: #ffffff;
+  color: #111827;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.16);
+}
+
+/* CABECERA */
+.payment-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.payment-header.small {
+  margin-bottom: 18px;
+}
+
+.payment-icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  color: #ffffff;
+  font-size: 1.45rem;
+  box-shadow: 0 12px 25px rgba(139, 92, 246, 0.25);
+}
+
+.payment-header h2,
+.payment-header h3 {
+  margin: 0;
+  color: #111827;
+  font-weight: 900;
+}
+
+.payment-header h2 {
+  font-size: 1.8rem;
+}
+
+.payment-header h3 {
+  font-size: 1.35rem;
+}
+
+.payment-header p {
+  margin: 6px 0 0;
+  color: #4b5563;
+}
+
+/* PLANES */
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.plan-card {
+  position: relative;
+  text-align: left;
+  width: 100%;
+  min-height: 190px;
+  box-sizing: border-box;
+  padding: 22px;
+  border-radius: 22px;
+  border: 2px solid #e5e7eb;
+  background: #f8fafc;
+  color: #111827;
+  cursor: pointer;
+  transition: all 0.22s ease;
+}
+
+.plan-card:hover {
+  transform: translateY(-4px);
+  border-color: #a78bfa;
+  box-shadow: 0 18px 35px rgba(15, 23, 42, 0.14);
+}
+
+.plan-card.selected {
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(135deg, #8b5cf6, #ec4899) border-box;
+  border: 2px solid transparent;
+  box-shadow:
+    0 18px 40px rgba(139, 92, 246, 0.22),
+    0 0 0 4px rgba(139, 92, 246, 0.12);
+}
+
+.plan-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.plan-name {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #111827;
+}
+
+.selected-badge,
+.recommended-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.selected-badge {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+}
+
+.recommended-badge {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fbbf24;
+}
+
+.plan-price {
+  margin-top: 18px;
+  font-size: 2rem;
+  font-weight: 1000;
+  color: #111827;
+  letter-spacing: -0.5px;
+}
+
+.plan-description {
+  margin-top: 10px;
+  color: #4b5563;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.plan-footer {
+  margin-top: 18px;
+  color: #6b7280;
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
+/* SIN PLANES */
+.no-plans {
+  padding: 16px;
+  border-radius: 16px;
+  background: #fee2e2;
+  color: #991b1b;
+  font-weight: 800;
+  border: 1px solid #fecaca;
+  margin-bottom: 20px;
+}
+
+/* RESUMEN PLAN */
+.selected-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin-bottom: 22px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: #eff6ff;
+  color: #1e3a8a;
+  border: 1px solid #bfdbfe;
+  font-weight: 800;
+}
+
+.selected-summary span {
+  text-transform: uppercase;
+}
+
+/* TARJETA */
+.card-section {
+  margin-top: 10px;
+  padding: 22px;
+  border-radius: 22px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+}
+
+.card-section.compact {
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+.card-section h3 {
+  margin: 0 0 14px;
+  color: #111827;
+  font-weight: 900;
+}
+
+/* STRIPE */
+#card-element {
+  width: 100%;
+  min-height: 50px;
+  box-sizing: border-box;
+  padding: 16px 18px;
+  margin: 14px 0 20px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #111827;
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.05);
+}
+
+/* BOTÓN PAGAR */
+.pay-now-btn {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px 18px;
+  border: none;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+  font-weight: 1000;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+  box-shadow: 0 14px 28px rgba(34, 197, 94, 0.25);
+}
+
+.pay-now-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
+.pay-now-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ERRORES */
+.error {
+  margin-top: 14px;
+  padding: 13px 14px;
+  border-radius: 14px;
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  font-weight: 800;
+}
+
+/* PAGO CANCIÓN */
+.song-payment-card {
+  width: 100%;
+  max-width: 650px;
+  box-sizing: border-box;
+}
+
+/* RESPONSIVE */
+@media (max-width: 700px) {
+  .subscription-layout,
+  .song-payment-layout {
+    padding: 20px;
+  }
+
+  .payment-header {
+    align-items: flex-start;
+  }
+
+  .plans-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .plan-card {
+    min-height: auto;
+  }
+
+  .plan-price {
+    font-size: 1.65rem;
+  }
+
+  .selected-summary {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+.song-price-config {
+  margin: 22px 0;
+  padding: 22px;
+  border-radius: 22px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+}
+
+.song-price-config h3 {
+  margin: 0 0 8px;
+  color: #111827;
+  font-weight: 900;
+}
+
+.song-price-config p {
+  margin: 0 0 18px;
+  color: #4b5563;
+}
+
+.song-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.song-price-row label {
+  color: #111827;
+  font-weight: 800;
+}
+
+.song-price-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+}
+
+.song-price-input-wrapper input {
+  width: 120px;
+  border: none;
+  outline: none;
+  color: #111827;
+  font-size: 1.1rem;
+  font-weight: 900;
+}
+
+.song-price-input-wrapper span {
+  color: #111827;
+  font-weight: 900;
+}
+
+.song-price-preview {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e3a8a;
+  font-weight: 800;
+}

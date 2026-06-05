@@ -1,0 +1,153 @@
+<div class="payment-page">
+
+  <div *ngIf="mode === 'subscription'" class="subscription-layout">
+
+    <div class="payment-header">
+      <div class="payment-icon">🎵</div>
+
+      <div>
+        <h2>Suscripción Gramola</h2>
+        <p>
+          Elige un plan, configura el precio que tus clientes pagarán por canción y activa el servicio.
+        </p>
+      </div>
+    </div>
+
+    <div class="plans-grid" *ngIf="plans.length > 0">
+      <button
+        type="button"
+        class="plan-card"
+        *ngFor="let plan of plans"
+        [class.selected]="selectedPlanId === plan.id"
+        (click)="selectPlan(plan.id)"
+      >
+        <div class="plan-top">
+          <span class="plan-name">{{ plan.name }}</span>
+
+          <span class="selected-badge" *ngIf="selectedPlanId === plan.id">
+            Seleccionado
+          </span>
+
+          <span class="recommended-badge" *ngIf="plan.recommended && selectedPlanId !== plan.id">
+            Recomendado
+          </span>
+        </div>
+
+        <div class="plan-price">
+          {{ formatPrice(plan.amount, plan.currency) }}
+        </div>
+
+        <div class="plan-description">
+          {{ plan.description }}
+        </div>
+
+        <div class="plan-footer">
+          <span *ngIf="plan.intervalType === 'MONTH'">
+            Pago mensual
+          </span>
+
+          <span *ngIf="plan.intervalType === 'YEAR'">
+            Pago anual
+          </span>
+
+          <span *ngIf="plan.intervalType !== 'MONTH' && plan.intervalType !== 'YEAR'">
+            Pago único
+          </span>
+        </div>
+      </button>
+    </div>
+
+    <div class="song-price-config">
+      <h3>Configura el precio por canción</h3>
+
+      <p>
+        Este será el importe que pagarán los clientes de tu bar cada vez que quieran poner una canción.
+      </p>
+
+      <div class="song-price-row">
+        <label for="songPriceEuros">Precio por canción</label>
+
+        <div class="song-price-input-wrapper">
+          <input
+            id="songPriceEuros"
+            type="number"
+            min="0.10"
+            step="0.01"
+            [(ngModel)]="songPriceEuros"
+          />
+          <span>€</span>
+        </div>
+      </div>
+
+      <div class="song-price-preview">
+        Precio configurado:
+        <strong>{{ formatPrice(getSongPriceCentsFromInput(), 'eur') }}</strong>
+      </div>
+    </div>
+
+    <div class="selected-summary" *ngIf="selectedPlanId">
+      <strong>Plan elegido:</strong>
+      <span>
+        {{ selectedPlanId }}
+      </span>
+    </div>
+
+    <div class="card-section">
+      <h3>Datos de tarjeta</h3>
+
+      <div id="card-element"></div>
+
+      <button
+        type="button"
+        class="pay-now-btn"
+        (click)="pay()"
+        [disabled]="paying"
+      >
+        <span *ngIf="!paying">Pagar ahora</span>
+        <span *ngIf="paying">Procesando pago...</span>
+      </button>
+
+      <p class="error" *ngIf="errorMsg">
+        {{ errorMsg }}
+      </p>
+    </div>
+  </div>
+
+  <div *ngIf="mode === 'song'" class="song-payment-layout">
+
+    <div class="song-payment-card">
+      <div class="payment-header small">
+        <div class="payment-icon">💳</div>
+
+        <div>
+          <h3>Pagar por canción</h3>
+          <p>
+            Precio: {{ formatPrice(songPlan?.amount || songAmountCents, songPlan?.currency || 'eur') }}
+          </p>
+        </div>
+      </div>
+
+      <div class="card-section compact">
+        <h3>Datos de tarjeta</h3>
+
+        <div id="card-element"></div>
+
+        <button
+          type="button"
+          class="pay-now-btn"
+          (click)="pay()"
+          [disabled]="paying"
+        >
+          <span *ngIf="!paying">Pagar ahora</span>
+          <span *ngIf="paying">Procesando pago...</span>
+        </button>
+
+        <p class="error" *ngIf="errorMsg">
+          {{ errorMsg }}
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+</div>

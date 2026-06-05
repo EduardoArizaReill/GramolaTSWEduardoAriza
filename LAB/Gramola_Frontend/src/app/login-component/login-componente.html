@@ -1,0 +1,29 @@
+<form class = "custom-form" [formGroup] = "loginForm" (ngSubmit)="onSubmit()">
+    <h2>Login</h2>
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" formControlName="email" required>
+    </div>
+
+    <div class ="invalid-feedback" *ngIf="this .loginForm.controls['email'].errors?.['required']">
+        Email is required.
+    </div>
+    <div class ="invalid-feedback" *ngIf="this .loginForm.controls['email'].errors?.['email']">
+        Invalid email format.
+    </div>
+    <div class ="invalid-feedback" *ngIf="this .loginForm.controls['email'].errors?.['minlength']">
+        Email must be at least 5 characters long.   
+    </div>
+    
+
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" formControlName="password" required>
+    </div>
+    <div *ngIf="errMsg" class="error-message">{{ errMsg }}</div>
+    <button type="submit">Login</button>
+
+    <button type="button" class="forgot-link" (click)="goForgotPassword()">
+    ¿Olvidaste tu contraseña?
+    </button>
+</form>

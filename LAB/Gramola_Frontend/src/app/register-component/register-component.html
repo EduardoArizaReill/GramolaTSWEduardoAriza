@@ -1,0 +1,74 @@
+<form class="register-form" (ngSubmit)="registrar()">
+
+  <label>Nombre del bar</label>
+  <input
+    type="text"
+    name="bar"
+    [(ngModel)]="bar"
+    placeholder="Ej: Bar La Esquina"
+    autocomplete="organization"
+    required
+  />
+
+  <label>Email</label>
+  <input
+    type="email"
+    name="email"
+    [(ngModel)]="email"
+    placeholder="ejemplo@correo.com"
+    autocomplete="email"
+    required
+  />
+
+  <label>Client ID (Spotify)</label>
+  <input
+    type="text"
+    name="clientId"
+    [(ngModel)]="clientId"
+    placeholder="Tu Client ID de Spotify"
+    autocomplete="off"
+    required
+  />
+  <div class="hint">
+    Lo encuentras en el Dashboard de Spotify Developer (tu app) → Client ID.
+  </div>
+
+  <label>Client Secret (Spotify)</label>
+  <input
+    type="password"
+    name="clientSecret"
+    [(ngModel)]="clientSecret"
+    placeholder="Tu Client Secret de Spotify"
+    autocomplete="off"
+    required
+  />
+  <div class="hint">
+    Es la clave secreta de la app de Spotify (no la compartas).
+  </div>
+
+  <label>Contraseña</label>
+  <input
+    type="password"
+    name="pwd1"
+    [(ngModel)]="pwd1"
+    placeholder="********"
+    autocomplete="new-password"
+    required
+  />
+
+  <label>Confirmar contraseña</label>
+  <input
+    type="password"
+    name="pwd2"
+    [(ngModel)]="pwd2"
+    placeholder="********"
+    autocomplete="new-password"
+    required
+  />
+
+  <button type="submit" class="btn-primary">Registrar</button>
+
+  <div *ngIf="registroOK" class="success-message">{{ registroOK }}</div>
+  <div *ngIf="registroKO" class="error-message">{{ registroKO }}</div>
+
+</form>

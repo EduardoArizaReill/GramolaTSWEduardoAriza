@@ -1,0 +1,276 @@
+<div class="top-bar">
+  <button class="logout-btn" routerLink="/login">
+    Cerrar sesión
+  </button>
+</div>
+
+<div class="main-container">
+
+  <!-- Cabecera principal de la pantalla -->
+  <section class="header">
+    <h1>Gramola desde el corazón</h1>
+    <p>Tu música favorita, ahora en tu ¿bar?.</p>
+  </section>
+
+  <!-- Buscador de canciones -->
+  <section class="search-container">
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      (keyup.enter)="buscarCancion()"
+      placeholder="BUSCA ALGO NINO..."
+    />
+
+    <button type="button" (click)="buscarCancion()">
+      Buscar
+    </button>
+  </section>
+
+  <!-- Resultados que me devuelve Spotify -->
+  <section *ngIf="searchResults.length > 0" class="search-results-section">
+    <h2>Resultados de búsqueda</h2>
+
+    <div class="results-list">
+      <article class="result-item" *ngFor="let track of searchResults">
+
+        <img
+          *ngIf="track.album?.images?.length"
+          [src]="track.album?.images?.[0]?.url"
+          alt="Cover"
+        />
+
+        <div class="result-info">
+          <span class="track-name">{{ track.name }}</span>
+
+          <span class="artist-name">
+            {{ track.artists[0]?.name || 'Artista desconocido' }}
+          </span>
+        </div>
+
+        <button
+          class="pay-btn-small"
+          type="button"
+          (click)="preparePayment(track)"
+        >
+          Pagar canción
+        </button>
+
+        <!-- Solo muestro el pago en la canción seleccionada -->
+        <div *ngIf="isSelectedTrack(track)" class="inline-payment-box">
+          <h3>Pagar canción</h3>
+
+          <p>
+            Vas a añadir:
+            <strong>{{ selectedTrackToPay?.name }}</strong>
+          </p>
+
+          <p>
+            Precio:
+            <strong>{{ formatPrice(songAmountCents, songCurrency) }}</strong>
+          </p>
+
+          <app-payments
+            [mode]="'song'"
+            [songAmountCents]="songAmountCents"
+            (paymentSuccess)="onPaymentSuccess()">
+          </app-payments>
+
+          <button type="button" (click)="cancelPayment()">
+            Cancelar
+          </button>
+        </div>
+
+      </article>
+    </div>
+
+    <hr class="divider" />
+  </section>
+
+  <!-- Resumen de la cola que tengo en backend -->
+  <section class="backend-queue-section">
+    <div class="section-header">
+      <div>
+        <h2>Estado de canciones y backend</h2>
+        <p class="section-subtitle">
+          Aquí veo el resumen de canciones pagadas, pendientes y enviadas a Spotify.
+        </p>
+      </div>
+
+      <div class="queue-actions">
+        <button
+          type="button"
+          class="action-btn primary-btn"
+          (click)="updateCurrentSong()"
+        >
+          Actualizar canción actual
+        </button>
+
+        <button
+          type="button"
+          class="action-btn secondary-btn"
+          (click)="playNextFromBackend()"
+        >
+          Enviar siguiente pendiente a Spotify
+        </button>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <article class="stat-card stat-pending">
+        <span class="stat-label">Pendientes en backend</span>
+        <span class="stat-value">{{ pendingCount }}</span>
+        <span class="stat-help">Canciones aún no enviadas a Spotify</span>
+      </article>
+
+      <article class="stat-card stat-paid">
+        <span class="stat-label">Pagadas por este bar</span>
+        <span class="stat-value">{{ paidCount }}</span>
+        <span class="stat-help">Total de canciones registradas</span>
+      </article>
+
+      <article class="stat-card stat-used">
+        <span class="stat-label">Enviadas / usadas</span>
+        <span class="stat-value">{{ usedCount }}</span>
+        <span class="stat-help">Canciones ya tramitadas</span>
+      </article>
+    </div>
+
+    <div class="info-banner">
+      {{ queueMessage }}
+    </div>
+
+    <div class="queue-block">
+      <h3>Canciones pendientes en backend</h3>
+
+      <p class="empty-state" *ngIf="pendingQueue.length === 0">
+        No hay canciones pendientes porque las canciones pagadas ya se están enviando automáticamente a Spotify.
+      </p>
+
+      <div class="queue-list" *ngIf="pendingQueue.length > 0">
+        <article class="queue-item" *ngFor="let song of pendingQueue; let i = index">
+          <span class="queue-position">{{ i + 1 }}</span>
+
+          <img
+            *ngIf="song.image"
+            [src]="song.image"
+            alt="Portada"
+          />
+
+          <div class="queue-info">
+            <strong>{{ song.title }}</strong>
+            <span>{{ song.artist }}</span>
+            <small class="song-meta">Estado: pendiente en backend</small>
+          </div>
+
+          <span class="status-badge pending-badge">
+            Pendiente
+          </span>
+        </article>
+      </div>
+    </div>
+
+    <div class="queue-block">
+      <h3>Historial de canciones pagadas por este bar</h3>
+
+      <p class="empty-state" *ngIf="paidSongs.length === 0">
+        Todavía no hay canciones pagadas registradas.
+      </p>
+
+      <div class="queue-list" *ngIf="paidSongs.length > 0">
+        <article class="queue-item" *ngFor="let song of paidSongs; let i = index">
+          <span class="queue-position">{{ i + 1 }}</span>
+
+          <img
+            *ngIf="song.image"
+            [src]="song.image"
+            alt="Portada"
+          />
+
+          <div class="queue-info">
+            <strong>{{ song.title }}</strong>
+            <span>{{ song.artist }}</span>
+            <small class="song-meta">
+              Fecha: {{ formatDate(song.date) }}
+            </small>
+          </div>
+
+          <span
+            class="status-badge"
+            [ngClass]="song.played ? 'used-badge' : 'pending-badge'"
+          >
+            {{ song.played ? 'Enviada / usada' : 'Pendiente' }}
+          </span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Canción actual de Spotify -->
+  <section class="currently-playing">
+    <h2>Estas conectado desde el...</h2>
+
+    <p class="current-song-message" *ngIf="currentSongMessage">
+      {{ currentSongMessage }}
+    </p>
+
+    <div class="playing-info" *ngIf="currentlyPlaying?.item">
+      <img
+        *ngIf="currentlyPlaying?.item?.album?.images?.length"
+        [src]="currentlyPlaying?.item?.album?.images?.[0]?.url"
+        alt="Album Cover"
+      />
+
+      <div>
+        <h3>{{ currentlyPlaying?.item?.name }}</h3>
+        <p>{{ currentlyPlaying?.item?.artists?.[0]?.name }}</p>
+      </div>
+    </div>
+
+    <p *ngIf="!currentlyPlaying?.item">
+      No hay ninguna canción sonando ahora mismo.
+    </p>
+  </section>
+
+  <!-- Dispositivos de Spotify -->
+  <section class="devices" *ngIf="devices.length > 0">
+    <h2>Dispositivos disponibles</h2>
+
+    <ul>
+      <li *ngFor="let device of devices">
+        {{ device.name }} ({{ device.type }})
+        <span *ngIf="device.is_active">✅</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Playlists del usuario -->
+  <section class="playlists" *ngIf="playlists.length > 0">
+    <h2>Playlists</h2>
+
+    <div class="playlist-grid">
+      <article class="playlist-card" *ngFor="let list of playlists">
+
+        <div class="image-wrapper">
+          <img
+            *ngIf="list.images?.length"
+            [src]="list.images?.[0]?.url"
+            alt="Portada"
+          />
+
+          <img
+            *ngIf="!list.images?.length"
+            src="assets/default.png"
+            alt="Sin imagen"
+          />
+        </div>
+
+        <div class="playlist-details">
+          <h3>{{ list.name }}</h3>
+          <p>{{ list.tracks?.total || 0 }} canciones</p>
+        </div>
+
+      </article>
+    </div>
+  </section>
+
+</div>

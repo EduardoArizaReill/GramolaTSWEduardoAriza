@@ -1,0 +1,52 @@
+<div class="container">
+
+  <!-- Título principal del bloque -->
+  <h2>Mis playlists de Spotify</h2>
+
+  <!-- Si Spotify devuelve error, lo muestro aquí -->
+  <div *ngIf="playlistError" class="error">
+    {{ playlistError }}
+  </div>
+
+  <!-- Pinto las playlists solo si tengo resultados -->
+  <div class="playlist-grid" *ngIf="playlists.length > 0">
+    <div *ngFor="let list of playlists" class="playlist-card">
+
+      <!-- Uso imagen real si Spotify la devuelve -->
+      <img
+        *ngIf="list.images.length > 0"
+        [src]="list.images[0].url"
+        alt="Portada de playlist"
+      />
+
+      <!-- Si no hay imagen, uso una por defecto -->
+      <img
+        *ngIf="list.images.length === 0"
+        src="assets/default.png"
+        alt="Playlist sin imagen"
+      />
+
+      <h3>{{ list.name }}</h3>
+
+      <p>
+        By: {{ list.owner.display_name || 'Desconocido' }}
+      </p>
+
+      <p>
+        Tracks: {{ list.tracks.total || 0 }}
+      </p>
+
+      <!-- De momento lo dejo preparado por si luego se muestran canciones -->
+      <button type="button">
+        Ver canciones
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Mensaje cuando no hay playlists y tampoco hay error -->
+  <div *ngIf="playlists.length === 0 && !playlistError" class="empty-state">
+    <p>No se encontraron playlists o no estás conectado.</p>
+  </div>
+
+</div>

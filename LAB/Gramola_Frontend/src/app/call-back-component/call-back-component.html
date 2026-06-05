@@ -1,0 +1,38 @@
+<div class="cb-wrap">
+  <div class="cb-card">
+
+    <div class="cb-icon" [class.ok]="status === 'success'" [class.err]="status === 'error'">
+      <span *ngIf="status === 'loading'">🎧</span>
+      <span *ngIf="status === 'success'">✅</span>
+      <span *ngIf="status === 'error'">⚠️</span>
+    </div>
+
+    <h1 *ngIf="status === 'loading'">Conectando con Spotify…</h1>
+    <h1 *ngIf="status === 'success'">¡Conexión completada!</h1>
+    <h1 *ngIf="status === 'error'">No se pudo conectar</h1>
+
+    <p *ngIf="status === 'loading'" class="cb-text">
+      Estamos validando tu cuenta y preparando tus playlists.
+      No cierres esta ventana.
+    </p>
+
+    <p *ngIf="status === 'success'" class="cb-text">
+      Perfecto. Te llevamos a la gramola…
+    </p>
+
+    <div *ngIf="status === 'error'" class="cb-error">
+      {{ errorMsg }}
+    </div>
+
+    <div class="cb-actions" *ngIf="status === 'error'">
+      <button class="btn btn-primary" (click)="retry()">Volver a intentar</button>
+      <button class="btn btn-ghost" (click)="goHome()">Ir al inicio</button>
+    </div>
+
+    <div class="cb-footer">
+      <span class="dot" [class.on]="status !== 'error'"></span>
+      <span>Gramola</span>
+    </div>
+
+  </div>
+</div>
